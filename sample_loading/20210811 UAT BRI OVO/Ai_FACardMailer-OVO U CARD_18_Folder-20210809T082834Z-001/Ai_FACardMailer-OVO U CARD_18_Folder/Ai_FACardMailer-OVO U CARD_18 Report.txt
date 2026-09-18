@@ -1,0 +1,120 @@
+Package Report
+
+-----------------------------------------------------------------------------
+Document:
+Name: Ai_FACardMailer-OVO U CARD_18.ai
+Color Mode: RGB color
+Color Profile: none
+Ruler Units: centimeters
+Artboard Dimensions: 21,0002 cm x 29,7 cm
+Show Images in Outline Mode: OFF
+Highlight Substituted Fonts: OFF
+Highlight Substituted Glyphs: OFF
+Preserve Text Editability
+Simulate Colored Paper: OFF
+
+-----------------------------------------------------------------------------
+Spot Color Objects:
+Die Cut (CMYK)
+Mastercard Orange (165 C) (CMYK)
+Mastercard Red (2035 C) (CMYK)
+Mastercard Yellow (1375 C) (CMYK)
+
+-----------------------------------------------------------------------------
+Missing Fonts:NONE
+
+-----------------------------------------------------------------------------
+Protected Fonts that were not packaged:NONE
+
+-----------------------------------------------------------------------------
+Fonts:
+Barlow Regular (TrueType)
+Barlow Bold (TrueType)
+Barlow SemiBold (TrueType)
+Montserrat ExtraBold (TrueType)
+Montserrat Bold (TrueType)
+Montserrat Regular (TrueType)
+Frutiger (TrueType)
+Frutiger Bold (TrueType)
+
+-----------------------------------------------------------------------------
+Embedded Fonts:
+NONE
+
+-----------------------------------------------------------------------------
+Missing Links:
+NONE
+
+-----------------------------------------------------------------------------
+Linked Images:
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\logo OVO_Aug 2018-03.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 34270K, 5176 by 1695 pixels
+Dimensions: 65,797 by 21,547 points 
+Resolution: 5663,988 by 5663,988 pixels per inch
+
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\logo OVO_Aug 2018-03.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 34270K, 5176 by 1695 pixels
+Dimensions: 65,797 by 21,547 points 
+Resolution: 5663,988 by 5663,988 pixels per inch
+
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\Barcode Mailcard.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 900K, 480 by 480 pixels
+Dimensions: 94,757 by 94,757 points 
+Resolution: 364,721 by 364,721 pixels per inch
+
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\wang_shutterstock_AltUngu_1.jpg
+Type: RGB
+Bits per Pixel: 24
+Channels: 3
+Size: 29518K, 4478 by 2250 pixels
+Dimensions: 792,498 by 398,196 points 
+Resolution: 406,835 by 406,835 pixels per inch
+
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\buat-mailcard.png
+Type: RGB
+Bits per Pixel: 24
+Channels: 3
+Size: 29518K, 4478 by 2250 pixels
+Dimensions: 778,338 by 398,306 points 
+Resolution: 414,236 by 406,722 pixels per inch
+
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\Barcode Mailcard.png
+Type: Transparent RGB
+Bits per Pixel: 32
+Channels: 4
+Size: 900K, 480 by 480 pixels
+Dimensions: 94,757 by 94,757 points 
+Resolution: 364,721 by 364,721 pixels per inch
+
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\wang_shutterstock_AltUngu_1.jpg
+Type: RGB
+Bits per Pixel: 24
+Channels: 3
+Size: 29518K, 4478 by 2250 pixels
+Dimensions: 4478 by 2250 points 
+Resolution: 72 by 72 pixels per inch
+
+
+C:\Users\User\Documents\ERKAJ\OVO\OVO_UCARD\5 MAIL CARD\__cardmailer_ovo u card_OK\__CARDMAILER_OVO U CARD_17\Ai_FACardMailer-OVO U CARD_17_Folder\Links\wang_shutterstock_AltUngu_1.jpg
+Type: RGB
+Bits per Pixel: 24
+Channels: 3
+Size: 29518K, 4478 by 2250 pixels
+Dimensions: 792,498 by 398,196 points 
+Resolution: 406,835 by 406,835 pixels per inch

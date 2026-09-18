@@ -1,0 +1,261 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background-image: url(../images/background.jpg);
+	color: #000000;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	margin: 20px 0px 20px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+form {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+a {
+	color: #0000FF;
+	text-decoration: none;
+	border: none;
+	cursor: pointer;
+}
+
+a:hover {
+	color: #FF0000;
+	text-decoration: none;
+	border: none;
+}
+
+hr {
+	margin: 10px 0px 10px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+img {
+	border: none;
+}
+
+#container {
+	border-color: #666666;
+	/*border-style: dotted;*/
+	border-width: 1px;
+	margin: 0px auto 0px auto;
+	width: 998px;
+}
+
+#header {
+	font-size: 12px;
+	width: 100%;
+}
+
+#footer {
+	background-color: #99CC00;
+	font-size: 10px;
+	font-weight: bold;
+	width: 100%;
+	border-radius: 10px;
+	padding: 2px;
+	border: none;
+	line-height: 0px;
+}
+
+#login_box {
+	background-color: #FFFFFF;
+	border-color: #666666;
+	border-style: double;
+	border-width: 3px;
+	margin: 150px auto 0px auto;
+	width: 30%;
+	border-radius: 10px;
+}
+
+#iframe_data {
+	border-color: #006600;
+	border-style: solid;
+	border-width: 1px;
+	height: 1165px;
+	width: 100%;
+}
+
+.button {
+	background-color: #C60323;
+	border: #000000 1px solid;
+	color: #FFFFFF;
+	cursor: pointer;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	height: 30px;
+	border-radius: 10px;
+}
+
+.combobox {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	border-radius: 5px;
+}
+
+.textbox_1 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 50px;
+	text-align:right;
+	border-radius: 5px;
+}
+
+.textbox_2 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 100px;
+	border-radius: 5px;
+}
+
+.textbox_3 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 200px;
+	border-radius: 5px;
+}
+
+.textbox_4 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 400px;
+	border-radius: 5px;
+}
+
+.textarea_1 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	height: 50px;
+	width: 50px;
+}
+
+.textarea_2 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	height: 50px;
+	width: 100px;
+}
+
+.textarea_3 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	height: 50px;
+	width: 200px;
+}
+
+.textarea_4 {
+	background-color: #CCFFCC;
+	border: #666666 1px solid;
+	color: #0000CC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	height: 50px;
+	width: 400px;
+}
+
+.title {
+	font-size: 18px;
+}
+
+.subtitle {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.warning {
+	color: #FF0000;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: blink;
+}
+
+.table_header {
+	background-color: #000000;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-align:center;
+	height:30px;
+}
+
+.table_row_standard {
+	background-color: #EEEEEE;
+}
+
+.table_row_odd {
+	background-color: #DDDDDD;
+}
+
+.table_row_even {
+	background-color: #BBBBBB;
+}
+
+.table_row_even:hover,.table_row_odd:hover {
+	background-color:#666666;
+}
+
+.selected {
+	background-color:#FFFFCC;
+}
+
+.table_red_alert {
+	background-color: #FF0000;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: blink;
+}
+
+.vtip {
+	cursor:help;
+}
+
+.vtip input {
+	cursor:help;
+}
+
+p#vtip {
+	display: none;
+	position: absolute;
+	padding: 2px;
+	margin:auto;
+	left: 5px;
+	font-size: 12px;
+	background-color: #CCFFCC;
+	border: 1px solid #666666;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	z-index: 9999;
+}
+
+p#vtip #vtipArrow {
+	position: absolute;
+	top: -10px;
+	left: 5px
+}
