@@ -152,3 +152,34 @@ The canonical schema can derive these from batches/documents/deliveries/attempts
 
 ### Important semantic correction
 A delivery status represents the application's send lifecycle. Provider feedback such as opened, bounced and complained is an event timeline and must not overwrite all historical send facts. A message can be successfully sent and later bounce; therefore attempts and events remain separate.
+
+
+## Physical design audit: constraints and indexes
+
+The first physical optimization pass was derived from actual legacy access patterns rather than generic indexing.
+
+### Import
+- `statement_period` is constrained to the first day of its month. This gives legacy `blth` one canonical representation.
+- File lifecycle statuses now have CHECK constraints.
+- Statement lookup index is ordered `(statement_batch_id, account_number)` because operational/detail queries are batch-scoped first.
+- Added `(statement_batch_id, status)` for batch progress/detail filtering and a barcode lookup index.
+- No GIN index is added to `raw_data` or `source_attributes` by default. JSONB should not become an unbounded query API.
+
+### PDF
+- Added job type integrity constraint and indexes for document/job status and document event timeline.
+- Pending-job partial index remains the worker-facing hot-path index.
+
+### Messaging
+- Queue hot path remains a partial index on queued deliveries ordered by priority/time/id.
+- Added indexes supporting statement delivery lookup, schedule/status lookup, sent-time reporting, attempt status/time, provider message correlation, and event type/time reporting.
+- Attempt statuses, event types and suppression reasons now have database CHECK constraints.
+- Provider event/message identifiers are indexed for callback/inbox correlation.
+
+### Partitioning decision
+Do not partition yet. The legacy system demonstrates high historical volume, but a canonical schema removes the table-per-month anti-pattern and changes query behavior substantially. Native PostgreSQL partitioning should be introduced only after:
+1. representative row-count estimates are collected,
+2. production-like queries are benchmarked with EXPLAIN (ANALYZE, BUFFERS),
+3. retention/archive requirements are known,
+4. partition pruning provides a measurable benefit.
+
+Likely future candidates are `import.statements`, `messaging.delivery_attempts`, and `messaging.delivery_events`, but this is intentionally not encoded in the initial migration.
