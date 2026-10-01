@@ -136,9 +136,10 @@ return new class extends Migration
 
         Schema::create('import.errors', function (Blueprint $table) {
             $table->id();
-            $table->string('import_type', 20);
-            $table->unsignedBigInteger('batch_id');
-            $table->unsignedBigInteger('file_id')->nullable();
+            $table->foreignId('customer_batch_id')->nullable()->constrained('import.customer_batches')->cascadeOnDelete();
+            $table->foreignId('customer_file_id')->nullable()->constrained('import.customer_files')->cascadeOnDelete();
+            $table->foreignId('statement_batch_id')->nullable()->constrained('import.statement_batches')->cascadeOnDelete();
+            $table->foreignId('statement_file_id')->nullable()->constrained('import.statement_files')->cascadeOnDelete();
             $table->unsignedBigInteger('row_number')->nullable();
             $table->string('error_code', 100);
             $table->string('field_name', 100)->nullable();
@@ -146,18 +147,21 @@ return new class extends Migration
             $table->text('raw_value')->nullable();
             $table->jsonb('raw_data')->nullable();
             $table->timestampTz('created_at')->useCurrent();
-            $table->index(['import_type', 'batch_id']);
+            $table->index(['customer_batch_id', 'created_at']);
+            $table->index(['statement_batch_id', 'created_at']);
         });
 
         Schema::create('import.events', function (Blueprint $table) {
             $table->id();
-            $table->string('import_type', 20);
-            $table->unsignedBigInteger('batch_id');
-            $table->unsignedBigInteger('file_id')->nullable();
+            $table->foreignId('customer_batch_id')->nullable()->constrained('import.customer_batches')->cascadeOnDelete();
+            $table->foreignId('customer_file_id')->nullable()->constrained('import.customer_files')->cascadeOnDelete();
+            $table->foreignId('statement_batch_id')->nullable()->constrained('import.statement_batches')->cascadeOnDelete();
+            $table->foreignId('statement_file_id')->nullable()->constrained('import.statement_files')->cascadeOnDelete();
             $table->string('event_type', 100);
             $table->jsonb('metadata')->nullable();
             $table->timestampTz('occurred_at')->useCurrent();
-            $table->index(['import_type', 'batch_id', 'occurred_at']);
+            $table->index(['customer_batch_id', 'occurred_at']);
+            $table->index(['statement_batch_id', 'occurred_at']);
         });
 
         DB::statement("ALTER TABLE import.customer_batches ADD CONSTRAINT customer_batches_period_check CHECK (statement_period = date_trunc('month', statement_period)::date)");
@@ -168,8 +172,10 @@ return new class extends Migration
         DB::statement("ALTER TABLE import.customer_batches ADD CONSTRAINT customer_batches_status_check CHECK (status IN ('pending','processing','completed','partially_completed','failed','cancelled'))");
         DB::statement("ALTER TABLE import.statement_batches ADD CONSTRAINT statement_batches_status_check CHECK (status IN ('pending','processing','completed','partially_completed','failed','cancelled'))");
         DB::statement("ALTER TABLE import.statements ADD CONSTRAINT statements_status_check CHECK (status IN ('valid','invalid','processed','failed'))");
-        DB::statement("ALTER TABLE import.errors ADD CONSTRAINT import_errors_type_check CHECK (import_type IN ('customer','statement'))");
-        DB::statement("ALTER TABLE import.events ADD CONSTRAINT import_events_type_check CHECK (import_type IN ('customer','statement'))");
+        DB::statement("ALTER TABLE import.errors ADD CONSTRAINT import_errors_owner_check CHECK ((customer_batch_id IS NOT NULL AND statement_batch_id IS NULL) OR (customer_batch_id IS NULL AND statement_batch_id IS NOT NULL))");
+        DB::statement("ALTER TABLE import.errors ADD CONSTRAINT import_errors_file_owner_check CHECK ((customer_file_id IS NULL OR customer_batch_id IS NOT NULL) AND (statement_file_id IS NULL OR statement_batch_id IS NOT NULL) AND NOT (customer_file_id IS NOT NULL AND statement_file_id IS NOT NULL))");
+        DB::statement("ALTER TABLE import.events ADD CONSTRAINT import_events_owner_check CHECK ((customer_batch_id IS NOT NULL AND statement_batch_id IS NULL) OR (customer_batch_id IS NULL AND statement_batch_id IS NOT NULL))");
+        DB::statement("ALTER TABLE import.events ADD CONSTRAINT import_events_file_owner_check CHECK ((customer_file_id IS NULL OR customer_batch_id IS NOT NULL) AND (statement_file_id IS NULL OR statement_batch_id IS NOT NULL) AND NOT (customer_file_id IS NOT NULL AND statement_file_id IS NOT NULL))");
     }
 
     public function down(): void
