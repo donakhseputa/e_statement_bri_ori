@@ -128,8 +128,10 @@ return new class extends Migration
             $table->jsonb('raw_data')->nullable();
             $table->string('status', 30)->default('valid');
             $table->timestampsTz();
-            $table->index(['account_number', 'statement_batch_id']);
+            $table->index(['statement_batch_id', 'account_number']);
+            $table->index(['statement_batch_id', 'status']);
             $table->index('customer_id');
+            $table->index('barcode');
         });
 
         Schema::create('import.errors', function (Blueprint $table) {
@@ -158,6 +160,10 @@ return new class extends Migration
             $table->index(['import_type', 'batch_id', 'occurred_at']);
         });
 
+        DB::statement("ALTER TABLE import.customer_batches ADD CONSTRAINT customer_batches_period_check CHECK (statement_period = date_trunc('month', statement_period)::date)");
+        DB::statement("ALTER TABLE import.statement_batches ADD CONSTRAINT statement_batches_period_check CHECK (statement_period = date_trunc('month', statement_period)::date)");
+        DB::statement("ALTER TABLE import.customer_files ADD CONSTRAINT customer_files_status_check CHECK (status IN ('pending','processing','completed','failed','quarantined'))");
+        DB::statement("ALTER TABLE import.statement_files ADD CONSTRAINT statement_files_status_check CHECK (status IN ('pending','processing','completed','failed','quarantined'))");
         DB::statement("ALTER TABLE import.customer_contacts ADD CONSTRAINT customer_contacts_type_check CHECK (type IN ('email','phone'))");
         DB::statement("ALTER TABLE import.customer_batches ADD CONSTRAINT customer_batches_status_check CHECK (status IN ('pending','processing','completed','partially_completed','failed','cancelled'))");
         DB::statement("ALTER TABLE import.statement_batches ADD CONSTRAINT statement_batches_status_check CHECK (status IN ('pending','processing','completed','partially_completed','failed','cancelled'))");
