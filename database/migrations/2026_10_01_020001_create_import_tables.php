@@ -26,7 +26,7 @@ return new class extends Migration
 
         Schema::create('import.customer_files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_batch_id')->constrained('import.customer_batches')->cascadeOnDelete();
+            $table->foreignId('customer_batch_id')->constrained('import.customer_batches');
             $table->string('original_name');
             $table->text('storage_key');
             $table->unsignedBigInteger('size_bytes')->nullable();
@@ -40,7 +40,7 @@ return new class extends Migration
 
         Schema::create('import.customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_batch_id')->constrained('import.customer_batches')->cascadeOnDelete();
+            $table->foreignId('customer_batch_id')->constrained('import.customer_batches');
             $table->foreignId('customer_file_id')->nullable()->constrained('import.customer_files')->nullOnDelete();
             $table->string('customer_number', 100)->nullable();
             $table->string('account_number', 100);
@@ -91,7 +91,7 @@ return new class extends Migration
 
         Schema::create('import.statement_files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('statement_batch_id')->constrained('import.statement_batches')->cascadeOnDelete();
+            $table->foreignId('statement_batch_id')->constrained('import.statement_batches');
             $table->string('original_name');
             $table->text('storage_key');
             $table->unsignedBigInteger('size_bytes')->nullable();
@@ -106,7 +106,7 @@ return new class extends Migration
 
         Schema::create('import.statements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('statement_batch_id')->constrained('import.statement_batches')->cascadeOnDelete();
+            $table->foreignId('statement_batch_id')->constrained('import.statement_batches');
             $table->foreignId('statement_file_id')->nullable()->constrained('import.statement_files')->nullOnDelete();
             $table->foreignId('customer_id')->nullable()->constrained('import.customers')->nullOnDelete();
             $table->string('customer_number', 100)->nullable();
@@ -136,10 +136,10 @@ return new class extends Migration
 
         Schema::create('import.errors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_batch_id')->nullable()->constrained('import.customer_batches')->cascadeOnDelete();
-            $table->foreignId('customer_file_id')->nullable()->constrained('import.customer_files')->cascadeOnDelete();
-            $table->foreignId('statement_batch_id')->nullable()->constrained('import.statement_batches')->cascadeOnDelete();
-            $table->foreignId('statement_file_id')->nullable()->constrained('import.statement_files')->cascadeOnDelete();
+            $table->foreignId('customer_batch_id')->nullable()->constrained('import.customer_batches');
+            $table->foreignId('customer_file_id')->nullable()->constrained('import.customer_files');
+            $table->foreignId('statement_batch_id')->nullable()->constrained('import.statement_batches');
+            $table->foreignId('statement_file_id')->nullable()->constrained('import.statement_files');
             $table->unsignedBigInteger('row_number')->nullable();
             $table->string('error_code', 100);
             $table->string('field_name', 100)->nullable();
@@ -153,10 +153,10 @@ return new class extends Migration
 
         Schema::create('import.events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_batch_id')->nullable()->constrained('import.customer_batches')->cascadeOnDelete();
-            $table->foreignId('customer_file_id')->nullable()->constrained('import.customer_files')->cascadeOnDelete();
-            $table->foreignId('statement_batch_id')->nullable()->constrained('import.statement_batches')->cascadeOnDelete();
-            $table->foreignId('statement_file_id')->nullable()->constrained('import.statement_files')->cascadeOnDelete();
+            $table->foreignId('customer_batch_id')->nullable()->constrained('import.customer_batches');
+            $table->foreignId('customer_file_id')->nullable()->constrained('import.customer_files');
+            $table->foreignId('statement_batch_id')->nullable()->constrained('import.statement_batches');
+            $table->foreignId('statement_file_id')->nullable()->constrained('import.statement_files');
             $table->string('event_type', 100);
             $table->jsonb('metadata')->nullable();
             $table->timestampTz('occurred_at')->useCurrent();
