@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
  public function up(): void {
   Schema::create('pdf.documents', function(Blueprint $t){
-   $t->id(); $t->foreignId('statement_id')->unique()->constrained('import.statements')->cascadeOnDelete();
+   $t->id(); $t->foreignId('statement_id')->unique()->constrained('import.statements');
    $t->string('status',30)->default('pending'); $t->string('file_name')->nullable(); $t->text('storage_key')->nullable();
    $t->string('mime_type',100)->default('application/pdf'); $t->unsignedBigInteger('size_bytes')->nullable();
    $t->unsignedInteger('page_count')->nullable(); $t->string('checksum',128)->nullable(); $t->boolean('is_encrypted')->default(false);
