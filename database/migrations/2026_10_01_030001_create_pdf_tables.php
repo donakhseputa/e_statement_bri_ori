@@ -17,14 +17,15 @@ return new class extends Migration {
    $t->id(); $t->foreignId('document_id')->constrained('pdf.documents')->cascadeOnDelete(); $t->string('job_type',30);
    $t->string('status',30)->default('pending'); $t->unsignedInteger('attempt_count')->default(0);
    $t->timestampTz('started_at')->nullable(); $t->timestampTz('completed_at')->nullable(); $t->timestampTz('failed_at')->nullable();
-   $t->string('error_code',100)->nullable(); $t->text('error_message')->nullable(); $t->timestampsTz();
+   $t->string('error_code',100)->nullable(); $t->text('error_message')->nullable(); $t->timestampsTz(); $t->index(['document_id','status']);
   });
   Schema::create('pdf.events', function(Blueprint $t){
    $t->id(); $t->foreignId('document_id')->constrained('pdf.documents')->cascadeOnDelete();
    $t->foreignId('job_id')->nullable()->constrained('pdf.jobs')->nullOnDelete(); $t->string('event_type',100);
-   $t->jsonb('metadata')->nullable(); $t->timestampTz('occurred_at')->useCurrent();
+   $t->jsonb('metadata')->nullable(); $t->timestampTz('occurred_at')->useCurrent(); $t->index(['document_id','occurred_at']);
   });
   DB::statement("ALTER TABLE pdf.documents ADD CONSTRAINT documents_status_check CHECK (status IN ('pending','processing','generated','failed','archived'))");
+  DB::statement("ALTER TABLE pdf.jobs ADD CONSTRAINT jobs_type_check CHECK (job_type IN ('generate','merge','encrypt','stamp','validate'))");
   DB::statement("ALTER TABLE pdf.jobs ADD CONSTRAINT jobs_status_check CHECK (status IN ('pending','processing','completed','failed','cancelled'))");
   DB::statement("CREATE INDEX idx_pdf_jobs_pending ON pdf.jobs (created_at) WHERE status = 'pending'");
  }
