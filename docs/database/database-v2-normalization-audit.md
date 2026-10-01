@@ -85,3 +85,39 @@ The Laravel migration draft has now been aligned with the audited semantics:
 - Validate sample/test-email behavior before adding a dedicated test-recipient table.
 - Determine which imported statement attributes deserve typed relational columns versus source-specific JSONB.
 - Benchmark representative statement volume before introducing native PostgreSQL partitioning.
+
+
+## Legacy detail-table field audit
+
+Representative loaders audited: B, BE, NC, BC, CK, CO, PK, SL, A1 and CE, plus multiple historical variants.
+
+### Canonical relational fields
+Fields repeatedly used across product loaders and/or operational queries are promoted to typed v2 columns:
+- legacy `nomor_customer` -> `customer_number`
+- `nomor_rekening` -> `account_number`
+- `nama` -> `customer_name`
+- `no_rek_asli` -> `original_account_number`
+- `tipe_kartu` -> `account_type`
+- `ket_produk` -> `product_description`
+- `kode_cab` -> `branch_code`
+- `cabang` -> `branch_name`
+- `kurir` -> `courier_name`
+- `barcode` -> `barcode`
+- date-like recurring business fields -> typed `statement_date`, `billing_date`, `due_date` where the importer can parse them reliably.
+
+### Fields moved out of statements
+- `pdf_name`, `jml_hlm`, `size_pdf` -> `pdf.documents`.
+- `password_pdf` -> encrypted/secret PDF handling, not ordinary statement data.
+- legacy combined `email` and `n_email` -> normalized customer contacts and delivery recipients.
+- address columns -> imported customer snapshot; do not duplicate them in every statement unless a source proves statement-specific address semantics.
+- `flagtrans` -> `core.products` relationship through the batch.
+- `blth` -> typed `statement_period` on the batch.
+- `nama_file` -> `import.statement_files`.
+
+### Product-specific attributes
+Fields that exist only for individual loaders or whose semantics vary by product are kept in `import.statements.source_attributes` JSONB initially. They should be promoted to relational columns only when they are part of cross-product filtering/reporting, integrity constraints, or stable application behavior.
+
+`raw_data` remains the immutable source-row representation for traceability. `source_attributes` is the normalized-but-product-specific extension payload. They serve different purposes and must not be treated interchangeably.
+
+### Consequence
+The v2 statement table is intentionally a hybrid: stable cross-product fields are typed and indexed; heterogeneous source-specific fields remain JSONB. This avoids both a giant sparse legacy-style table and an opaque JSON-only design.
