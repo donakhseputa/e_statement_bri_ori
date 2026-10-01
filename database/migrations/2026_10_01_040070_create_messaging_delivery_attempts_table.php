@@ -1,0 +1,6 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\DB; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up(): void {
+  Schema::create('messaging.delivery_attempts',function(Blueprint $t){$t->id();$t->foreignId('delivery_id')->constrained('messaging.deliveries')->cascadeOnDelete();$t->foreignId('mail_server_id')->constrained('messaging.mail_servers');$t->unsignedInteger('attempt_number');$t->string('status',30);$t->string('provider_message_id')->nullable();$t->timestampTz('started_at')->nullable();$t->timestampTz('completed_at')->nullable();$t->timestampTz('failed_at')->nullable();$t->string('error_code',100)->nullable();$t->text('error_message')->nullable();$t->jsonb('response_data')->nullable();$t->timestampTz('created_at')->useCurrent();$t->unique(['delivery_id','attempt_number']);$t->index(['status','created_at']);$t->index('provider_message_id');});
+  DB::statement("ALTER TABLE messaging.delivery_attempts ADD CONSTRAINT delivery_attempts_status_check CHECK (status IN ('processing','sent','failed'))");
+ } public function down(): void { Schema::dropIfExists('messaging.delivery_attempts'); } };
