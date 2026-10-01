@@ -203,3 +203,19 @@ Operational cleanup/retention must therefore be an explicit archival/purge workf
 
 ### Migration maintainability
 The current grouped-per-schema migration files are still considered a draft bootstrap. Before schema freeze they should be split into one table (or one tightly coupled pivot) per Laravel migration, preserving dependency order. This will make future rollback/change review safer and reduce unrelated migration diffs.
+
+
+## Laravel migration decomposition completed
+
+The grouped schema bootstrap migrations were removed and replaced with dependency-ordered Laravel migrations:
+- schema creation: 1 migration,
+- core: 9 migrations,
+- import: 9 migrations,
+- pdf: 3 migrations,
+- messaging: 9 migrations.
+
+Each table owns its PostgreSQL-specific CHECK constraints and partial indexes. This prevents unrelated tables from sharing migration state and makes future schema evolution/rollback review substantially safer.
+
+The numeric timestamp suffixes intentionally encode dependency order across schemas. Cross-schema dependencies are therefore visible in the migration sequence: core -> import -> pdf -> messaging.
+
+The database-v2 migration set now contains 31 files including schema creation.
