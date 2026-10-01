@@ -121,3 +121,34 @@ Fields that exist only for individual loaders or whose semantics vary by product
 
 ### Consequence
 The v2 statement table is intentionally a hybrid: stable cross-product fields are typed and indexed; heterogeneous source-specific fields remain JSONB. This avoids both a giant sparse legacy-style table and an opaque JSON-only design.
+
+
+## Delivery lifecycle and reporting audit
+
+Audited legacy scheduling, queue, send, feedback and summary paths including `m_jadwal`, `antrian_email`, `antrian_email_history`, `tr_email`, `read_email`, `bounce_inbox`, error logs and summary queries.
+
+### Canonical lifecycle
+- `m_jadwal` -> `messaging.schedules`. A schedule is a reusable/group entity because multiple queued deliveries share one scheduled execution time.
+- `antrian_email` -> `messaging.deliveries` with scheduled/queued state.
+- `antrian_email_history` -> no copied history table. State transitions are retained through `messaging.delivery_events`.
+- `tr_email` -> `messaging.delivery_attempts` plus delivery timestamps/state.
+- send error logs -> failed attempt data plus delivery events.
+- `read_email` -> delivery event type `opened` (source/provider details in metadata).
+- `bounce_inbox` -> bounce delivery events; permanent addresses also create/update `messaging.suppressions`.
+- legacy sample flags -> `messaging.deliveries.delivery_type` = production/sample/test.
+
+### Reporting compatibility
+Legacy summary reporting repeatedly calculates:
+- statement/PDF count and page count,
+- queued count,
+- attempted/sent count,
+- successful and failed count,
+- opened/read count,
+- bounce/other-feedback count,
+- sample success/failure,
+- scheduled send time.
+
+The canonical schema can derive these from batches/documents/deliveries/attempts/events without mutable duplicated summary tables. At application scale, dashboard queries should use targeted indexes and optionally materialized/warehouse projections rather than reintroducing transactional summary counters as source of truth.
+
+### Important semantic correction
+A delivery status represents the application's send lifecycle. Provider feedback such as opened, bounced and complained is an event timeline and must not overwrite all historical send facts. A message can be successfully sent and later bounce; therefore attempts and events remain separate.
