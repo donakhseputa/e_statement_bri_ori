@@ -219,3 +219,23 @@ Each table owns its PostgreSQL-specific CHECK constraints and partial indexes. T
 The numeric timestamp suffixes intentionally encode dependency order across schemas. Cross-schema dependencies are therefore visible in the migration sequence: core -> import -> pdf -> messaging.
 
 The database-v2 migration set now contains 31 files including schema creation.
+
+
+## Final canonical schema audit
+
+Additional legacy cross-checks were completed for sample email configuration, attachments, suppression behavior, access menus, PDF metadata and statement/document cardinality.
+
+### Corrections made
+- Legacy `sample_email` is configuration, not delivery history. Added `messaging.test_recipients` so reusable/default test addresses are managed independently from actual `messaging.recipients` snapshots.
+- `delivery_type = sample/test` continues to identify the actual delivery execution; it does not replace test-recipient configuration.
+- `pdf.documents` changed from one-document-per-statement to versioned one-to-many documents with unique `(statement_id, version)`. Regeneration/reprocessing must not require destructive overwrite of historical document metadata.
+
+### Confirmed mappings
+- Legacy `m_attach_file` represents ordinary selectable attachments; `core.attachments` + `messaging.attachments` covers the behavior. Inline/CID semantics are optional metadata, not a required relationship.
+- Legacy `menu1/usermenu1` are authorization/navigation implementation details. Canonical authorization remains users/roles/permissions; menu rendering belongs to application code and does not justify recreating legacy menu tables.
+- Legacy suppression extraction from send failures is represented by immutable delivery events plus `messaging.suppressions`.
+- PDF page count, size, checksum, storage location and encryption state belong to `pdf.documents`, not statements.
+- A statement may have multiple delivery executions (production, resend, sample/test); therefore no uniqueness constraint is placed on `messaging.deliveries.statement_id`.
+
+### Freeze readiness
+The canonical entities and cardinalities now cover the audited legacy business flows. Remaining work before declaring a schema freeze is validation by executing the Laravel migrations against the target PostgreSQL/Laravel runtime and producing the canonical ERD/legacy-to-v2 mapping matrix. Runtime validation may still reveal Laravel grammar issues with schema-qualified foreign keys; those are implementation corrections, not conceptual schema redesign.
