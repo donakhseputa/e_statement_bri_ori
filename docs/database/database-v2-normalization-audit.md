@@ -63,3 +63,25 @@ Do not model imported `m_customer` rows primarily as `core.customers`. The legac
 
 ## Migration status
 Existing Laravel migrations on this branch are a draft and must be revised to this audited model before being treated as canonical.
+
+
+## Implemented Laravel migration revision
+The Laravel migration draft has now been aligned with the audited semantics:
+- Removed `core.customers`, `core.customer_accounts`, and `core.customer_contacts`.
+- Added period-scoped `import.customer_batches`, `import.customer_files`, `import.customers`, and `import.customer_contacts`.
+- Split statement ingestion into `import.statement_batches`, `import.statement_files`, and `import.statements`.
+- `import.statements.customer_id` links a statement to the imported customer snapshot when a matching customer file exists.
+- PDF lifecycle now references `import.statements` through `pdf.documents.statement_id`.
+- Delivery lifecycle references `import.statements`; recipients may retain the source `import.customer_contacts` reference while snapshotting the actual email used.
+- SMTP secrets remain external through `secret_reference`; the database does not store the plaintext legacy password.
+- Legacy CID attachment semantics are preserved as `core.attachments.content_id`.
+
+### Deliberate snapshot duplication
+`messaging.recipients.email` remains even when `customer_contact_id` is present. This is intentional: delivery history must record the exact destination used at send time even if imported/contact data is corrected later.
+
+### Remaining validation before canonical freeze
+- Extract the complete column inventory of product-specific legacy detail tables and classify common vs product-specific attributes.
+- Validate scheduling semantics from `m_jadwal` and related scripts before adding a schedule table.
+- Validate sample/test-email behavior before adding a dedicated test-recipient table.
+- Determine which imported statement attributes deserve typed relational columns versus source-specific JSONB.
+- Benchmark representative statement volume before introducing native PostgreSQL partitioning.
