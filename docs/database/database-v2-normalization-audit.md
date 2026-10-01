@@ -239,3 +239,43 @@ Additional legacy cross-checks were completed for sample email configuration, at
 
 ### Freeze readiness
 The canonical entities and cardinalities now cover the audited legacy business flows. Remaining work before declaring a schema freeze is validation by executing the Laravel migrations against the target PostgreSQL/Laravel runtime and producing the canonical ERD/legacy-to-v2 mapping matrix. Runtime validation may still reveal Laravel grammar issues with schema-qualified foreign keys; those are implementation corrections, not conceptual schema redesign.
+
+
+## Schema Freeze v1.0
+
+**Status: FROZEN — 2026-10-01**
+
+Database V2 baseline is now the canonical schema for the E-Statement BRI refactor.
+
+Freeze prerequisites completed:
+
+- legacy database/source usage audited;
+- legacy concepts classified as retain, normalize, merge, replace, or discard;
+- canonical four-schema model established (`core`, `import`, `pdf`, `messaging`);
+- Laravel migrations decomposed to one table per migration;
+- PostgreSQL constraints, cross-schema foreign keys, deletion policy, and operational indexes defined;
+- full Laravel `migrate:fresh` successfully validated by the project owner against the target runtime after the final delivery-lifecycle correction;
+- canonical data dictionary created;
+- canonical ERD created;
+- legacy-to-V2 mapping matrix created;
+- bounce semantics finalized as delivery events rather than a mutable delivery status.
+
+From this point forward, baseline V2 migrations are treated as immutable. New schema requirements must be introduced with new forward migrations rather than editing the frozen baseline.
+
+### Canonical documentation
+
+- `docs/database/database-v2-data-dictionary.md`
+- `docs/database/database-v2-erd.md`
+- `docs/migration/legacy-to-v2-mapping.md`
+
+### Next implementation phase
+
+Schema design is no longer the active workstream. The next phase is implementation:
+
+1. ETL specification and migration tooling;
+2. Laravel models and relationships aligned to schema-qualified tables;
+3. service-level repositories/query contracts;
+4. legacy-to-V2 reconciliation tests;
+5. shadow migration/run before cutover.
+
+Partitioning remains intentionally deferred until representative-volume benchmarks demonstrate a need. Reporting/warehouse concerns remain outside the transactional schema freeze and may later be served by ClickHouse or dedicated reporting structures.
