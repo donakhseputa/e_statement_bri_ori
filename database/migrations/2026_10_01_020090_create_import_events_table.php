@@ -1,0 +1,7 @@
+<?php
+use Illuminate\Database\Migrations\Migration; use Illuminate\Database\Schema\Blueprint; use Illuminate\Support\Facades\DB; use Illuminate\Support\Facades\Schema;
+return new class extends Migration { public function up(): void {
+  Schema::create('import.events',function(Blueprint $t){$t->id();$t->foreignId('customer_batch_id')->nullable()->constrained('import.customer_batches');$t->foreignId('customer_file_id')->nullable()->constrained('import.customer_files');$t->foreignId('statement_batch_id')->nullable()->constrained('import.statement_batches');$t->foreignId('statement_file_id')->nullable()->constrained('import.statement_files');$t->string('event_type',100);$t->jsonb('metadata')->nullable();$t->timestampTz('occurred_at')->useCurrent();$t->index(['customer_batch_id','occurred_at']);$t->index(['statement_batch_id','occurred_at']);});
+  DB::statement("ALTER TABLE import.events ADD CONSTRAINT import_events_owner_check CHECK ((customer_batch_id IS NOT NULL AND statement_batch_id IS NULL) OR (customer_batch_id IS NULL AND statement_batch_id IS NOT NULL))");
+  DB::statement("ALTER TABLE import.events ADD CONSTRAINT import_events_file_owner_check CHECK ((customer_file_id IS NULL OR customer_batch_id IS NOT NULL) AND (statement_file_id IS NULL OR statement_batch_id IS NOT NULL) AND NOT (customer_file_id IS NOT NULL AND statement_file_id IS NOT NULL))");
+ } public function down(): void { Schema::dropIfExists('import.events'); } };
