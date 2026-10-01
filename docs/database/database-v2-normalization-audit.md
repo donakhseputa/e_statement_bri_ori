@@ -183,3 +183,23 @@ Do not partition yet. The legacy system demonstrates high historical volume, but
 4. partition pruning provides a measurable benefit.
 
 Likely future candidates are `import.statements`, `messaging.delivery_attempts`, and `messaging.delivery_events`, but this is intentionally not encoded in the initial migration.
+
+
+## Referential integrity and deletion policy
+
+### Import errors/events
+The initial polymorphic-like `import_type + batch_id + file_id` design was rejected because PostgreSQL could not enforce ownership with real foreign keys. It has been replaced with explicit nullable FK pairs for customer-import and statement-import ownership, plus CHECK constraints requiring exactly one batch domain and preventing cross-domain file references.
+
+### Deletion policy
+Historical statement processing is treated as durable operational evidence.
+- Cross-lifecycle parent relationships use PostgreSQL's default RESTRICT/NO ACTION behavior unless deletion is explicitly safe.
+- A statement batch cannot be deleted while statements depend on it.
+- A customer batch/file cannot disappear while durable import errors/events still reference it.
+- A statement cannot be deleted while a PDF document references it.
+- Child-only structures may cascade where their identity has no independent historical meaning, e.g. customer contacts with their customer snapshot, PDF jobs/events with a PDF document, and delivery recipients/attempts/events with a delivery.
+- User attribution uses SET NULL so removal/deactivation of an application user does not destroy business history.
+
+Operational cleanup/retention must therefore be an explicit archival/purge workflow, not an accidental consequence of deleting a parent row.
+
+### Migration maintainability
+The current grouped-per-schema migration files are still considered a draft bootstrap. Before schema freeze they should be split into one table (or one tightly coupled pivot) per Laravel migration, preserving dependency order. This will make future rollback/change review safer and reduce unrelated migration diffs.
