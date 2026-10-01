@@ -177,11 +177,9 @@ The statement is the business record; a PDF is an artifact generated from it. Mu
 | suppression-list variants | `messaging.suppressions` |
 | runtime timestamp views | parameterized reporting/query layer; no canonical table |
 
-## Pre-freeze consistency item
+## Lifecycle consistency resolved
 
-The current migration for `messaging.deliveries.status` still permits `bounced`. This conflicts with the canonical lifecycle rule above: bounce is provider feedback and should be represented by `messaging.delivery_events`, while a previously successful send remains `sent`.
-
-Before Schema Freeze v1.0, remove `bounced` from the delivery-status CHECK unless a separately audited application state requires it.
+`messaging.deliveries.status` intentionally excludes `bounced`. Bounce is provider feedback recorded in `messaging.delivery_events`; permanent/blocked-address consequences are represented in `messaging.suppressions`. A delivery that was accepted/sent before a later bounce therefore retains its send lifecycle truth.
 
 ## Ownership and retention
 
